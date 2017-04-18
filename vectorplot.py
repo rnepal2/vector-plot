@@ -8,12 +8,11 @@ where m=(mx, my, mz) is a (magnetization) vector.
 
 import matplotlib.pyplot as plt
 import numpy as np
-import os, math
-from joblib import Parallel, delayed
+import math
 from matplotlib import rc
 
 
-def Plot(input_mag_texture, temp):
+def Plot(input_mag_texture):
     data_table = input_mag_texture
     x_position_list = []
     y_position_list = []
@@ -37,21 +36,15 @@ def Plot(input_mag_texture, temp):
     cbar = plt.colorbar()
     cbar.set_clim(vmin=-1, vmax=1)
     cbar.set_label(r"$m_z$", fontsize=14)
-    if temp == 0: plt.title(r'$\alpha = 0.001$', fontsize=14)
-    if temp != 0: plt.title(r'$\alpha = 0.2$'.format(temp), fontsize=14)
+    plt.title(r'Magnetization texture: skyrmion lattice!', fontsize=14)
     plt.xlabel(r"$x-position (nm)$", fontsize=14)
     plt.ylabel(r"$y-position (nm)$", fontsize=14)
-    plt.xlim(0, 512*0.418)
-    plt.ylim(0, 256*0.418)
+    plt.xlim(15, 105)
+    plt.ylim(15, 105)
     plt.axes().set_aspect('equal')
     plt.show()
 
-zero_temp = np.loadtxt("alpha001.txt", skiprows=2)
-finite_temp = np.loadtxt("alpha02.txt", skiprows=2)
-
-list_ = [zero_temp, finite_temp]
-temps = [0, 15]
-for i in range(len(list_)):
-    Parallel(n_jobs=2) (delayed(Plot)(list_[i], temps[i]) for i in range(len(list_)))
-    
-    
+input_data = np.loadtxt("mag_texture.txt", skiprows=2)
+#Plotting
+Plot(input_data)
+ 
